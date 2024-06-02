@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Web App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-md mx-auto p-8 bg-white shadow-md rounded-md">
+      <h1 class="text-2xl font-semibold mb-4">扣几分?</h1>
+      <div id="flashcard" class="text-xl mb-6"></div>
+      <div id="buttons" class="flex justify-center">
+        <button id="showAnswer" class="bg-blue-500 text-white px-4 py-2 rounded-md mr-4">看答案</button>
+        <button id="nextQuestion" class="bg-green-500 text-white px-4 py-2 rounded-md">下一条问题</button>
+      </div>
+      <!-- 添加一个返回首页的链接 -->
+      <div class="text-center mt-4">
+        <a href="index.html" class="text-blue-500">返回首页</a>
+      </div>
+    </div>
+
+
+    <script>
+      const questionsList = [
+        { question: '普倒掉', answer: '扣1分' },
+        { question: '会车', answer: '扣1分' },
+        { question: '灯光', answer: '扣1分' },
+        { question: '安全带', answer: '扣1分' },
+        { question: '年检', answer: '扣1分' },
+        { question: '禁令标', answer: '扣1分' },
+        { question: '普逆', answer: '扣3分' },
+        { question: '电话', answer: '扣3分' },
+        { question: '排队穿插', answer: '扣3分' },
+        { question: '故障灯光', answer: '扣3分' },
+        { question: '三不让', answer: '扣3分' },
+        { question: '应急', answer: '扣6分' },
+        { question: '信号灯', answer: '扣6分' },
+        { question: '暂扣', answer: '扣6分' },
+        { question: '逃逸轻微', answer: '扣6分' },
+        { question: '不符', answer: '扣9分' },
+        { question: '高违停', answer: '扣9分' },
+        { question: '无校资', answer: '扣9分' },
+        { question: '饮酒', answer: '扣12分' },
+        { question: '高倒掉逆', answer: '扣12分' },
+        { question: '买卖分', answer: '扣12分' },
+        { question: '逃逸死亡', answer: '扣12分' }
+      ];
+
+      let currentIndex = 0;
+
+      function showQuestion(index) {
+        $('#flashcard').text(questionsList[index].question);
+        $('#showAnswer').show();
+      }
+
+      function showAnswer(index) {
+        $('#flashcard').text(questionsList[index].answer);
+        $('#showAnswer').hide();
+        $('#nextQuestion').show();
+      }
+
+      function nextQuestion() {
+        currentIndex++;
+        if (currentIndex < questionsList.length) {
+          showQuestion(currentIndex);
+          $('#showAnswer').show();
+          $('#nextQuestion').hide();
+        } else {
+          $('#flashcard').text('已完成练习');
+          $('#showAnswer').hide();
+          $('#nextQuestion').text('重新开始');
+        }
+      }
+
+      function reset() {
+        currentIndex = 0;
+        showQuestion(currentIndex);
+        $('#showAnswer').show();
+        $('#nextQuestion').hide();
+      }
+
+      $(document).ready(function () {
+        $('#showAnswer').hide();
+        $('#nextQuestion').hide();
+        questionsList.sort(() => Math.random() - 0.5);
+        showQuestion(currentIndex);
+
+        $('#showAnswer').click(function () {
+          showAnswer(currentIndex);
+        });
+
+        $('#nextQuestion').click(function () {
+          if ($(this).text() === '重新开始') {
+            reset();
+          } else {
+            nextQuestion();
+          }
+        });
+      });
+    </script>
+  </body>
+
+</html>
